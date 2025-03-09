@@ -1,14 +1,14 @@
 - name: Install and Configure Promtail
-  hosts: all
-  become: true
+  hosts: loki
   vars:
     promtail_version: "2.9.4"
     promtail_config_dir: "/etc/promtail"
     promtail_download_dir: "/tmp"
     promtail_binary_dir: "/usr/bin"
     promtail_config_file: "{{ promtail_config_dir }}/config.yml"
-    promtail_service_file: "/etc/init.d/promtail"
+    promtail_service_file: "/etc/systemd/system/promtail.service"
     loki_url: "http://10.0.46.122:3100/loki/api/v1/push"
+
   tasks:
     - block:
       - name: Create Promtail config directory
@@ -56,23 +56,24 @@
           mode: '0644'
         notify: restart promtail
         
-      - name: Create Promtail OpenWrt init script
+      - name: Create Promtail systemd service file
         template:
-          src: promtail_openwrt.j2
+          src: promtail.service.j2
           dest: "{{ promtail_service_file }}"
-          mode: '0755'
+          mode: '0644'
         notify: restart promtail
         
-      - name: Enable and start Promtail service
-        service:
+      - name: Start and enable Promtail service
+        systemd:
           name: promtail
           state: started
           enabled: yes
-      
-      when: docker == false and inventory_hostname == "openwrt"
+          daemon_reload: yes
+    
+      when: docker == false and inventory_hostname != "openwrt"
       
   handlers:
     - name: restart promtail
-      service:
+      systemd:
         name: promtail
         state: restarted
