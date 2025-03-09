@@ -1,0 +1,40 @@
+puccia:
+  hosts:
+    lldap:
+      ansible_host: 10.0.46.100
+    pihole:
+      ansible_host: 10.0.46.101
+    homepage:
+      ansible_host: 10.0.46.102
+    ntfy:
+      ansible_host: 10.0.46.103
+    syncthing:
+      ansible_host: 10.0.46.105
+    ddns:
+      ansible_host: 10.0.46.112
+    vaultwarden:
+      ansible_host: 10.0.46.113
+    couchdb:
+      ansible_host: 10.0.46.114
+    immich:
+      ansible_host: 10.0.46.119
+    wireguard:
+      ansible_host: 10.0.46.120
+    caddy:
+      ansible_host: 10.0.46.121
+      docker: true
+    tailscale:
+      ansible_host: 10.0.46.123
+    openwrt:
+      ansible_host: 10.0.46.1
+    media:
+      ansible_host: 10.0.46.233
+      ansible_user: media
+      docker: true
+
+    loki:
+      ansible_host: 10.0.46.122
+  vars:
+    ansible_user: root
+    ansible_ssh_private_key_file: ~/.ssh/puccia.key
+    docker: false

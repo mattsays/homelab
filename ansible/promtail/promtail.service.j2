@@ -1,0 +1,14 @@
+# templates/promtail.service.j2
+[Unit]
+Description=Promtail service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart={{ promtail_binary_dir }}/promtail -config.file {{ promtail_config_file }}
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
