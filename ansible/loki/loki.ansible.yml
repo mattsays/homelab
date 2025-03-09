@@ -1,0 +1,6 @@
+---
+- name: Installa e configura Loki tramite apt
+  hosts: all
+  become: true
+  roles:
+    - grafana.grafana.loki
