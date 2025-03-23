@@ -1,0 +1,37 @@
+---
+- name: Installare e avviare Firefox Docker tramite compose
+  hosts: all
+  become: true
+  tasks:
+    - name: Assicurarsi che Docker sia avviato e abilitato
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    
+    - name: Creare la directory per docker-compose
+      file:
+        path: /opt/firefox-docker
+        state: directory
+        mode: '0755'
+    
+    - name: Creare il file docker-compose.yml
+      copy:
+        dest: /opt/firefox-docker/docker-compose.yml
+        content: |
+          services:
+            firefox:
+              image: jlesage/firefox
+              container_name: firefox
+              ports:
+                - "5800:5800"
+              volumes:
+                - /opt/firefox-docker/config:/config
+              environment:
+                - TZ=Europe/Rome
+              restart: unless-stopped
+        
+    - name: Avviare il container con docker-compose
+      community.docker.docker_compose_v2:
+        project_src: /opt/firefox-docker
+        state: present

@@ -1,0 +1,46 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Music Stack
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /opt/music/navidrome
+        - /opt/music/deemix
+        - /opt/music/deemix/scripts
+        - /mnt/music
+
+    - name: Copy docker-compose.yml
+      copy:
+        dest: /opt/music/compose.yml
+        src: ./compose.yml
+    
+    - name: Copy secrets.env
+      copy:
+        dest: /opt/music/secrets.env
+        src: ./secrets.env
+        mode: '0600'
+
+    - name: Copy deemix config
+      copy:
+        dest: /opt/music/deemix/config.json
+        src: ./deemix/config.json
+        mode: '0755'
+
+    - name: Copy Navidrome Scan Script
+      copy:
+        dest: /opt/music/deemix/scripts/navidrome_scan.sh
+        src: ./deemix/scripts/navidrome_scan.sh
+        mode: '0755'
+
+    - name: Start Docker Compose Services
+      command: docker compose -f /opt/music/compose.yml up -d
+      args:
+        chdir: /opt/music/

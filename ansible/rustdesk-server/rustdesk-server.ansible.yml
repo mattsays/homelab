@@ -1,0 +1,27 @@
+---
+- name: Install Rustdesk
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install sudo package
+      package:
+        name: sudo
+        state: present
+          
+    - name: Create rustdesk user
+      user:
+        name: rustdesk
+        comment: "Rustdesk Service User"
+        shell: /bin/bash
+        home: /home/rustdesk
+        create_home: yes
+        state: present
+
+    - name: Configure sudo access for rustdesk user
+      lineinfile:
+        path: /etc/sudoers.d/rustdesk
+        line: "rustdesk ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        mode: 0440
+        create: yes
+        validate: 'visudo -cf %s'

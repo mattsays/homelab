@@ -1,0 +1,39 @@
+
+##########
+# MUSIC STACK
+##########
+services:
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    env_file: secrets.env
+    environment:
+      # Optional: put your config options customization here. Examples:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+      # Setup spotify and lastfm secrets in secrets.env
+      #ND_SPOTIFY_ID: ""
+      #ND_SPOTIFY_SECRET: ""
+      #ND_LASTFM_APIKEY: ""
+      #ND_LASTFM_SECRET: ""
+    volumes:
+      - "/opt/music/navidrome/:/data"
+      - "/mnt/music:/music:ro"
+
+  deemix:
+    image: registry.gitlab.com/bockiii/deemix-docker
+    container_name: deemix
+    restart: unless-stopped
+    volumes:
+      - /mnt/music/:/downloads
+      - /opt/music/deemix:/config
+      - /opt/music/deemix/scripts/:/scripts
+    environment:
+      - DEEMIX_SINGLE_USER=true
+    ports:
+      - 6595:6595

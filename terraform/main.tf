@@ -1,21 +1,35 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source = "telmate/proxmox"
-      #latest version as of Nov 30 2022
-      version = "2.9.11"
-    }
-  }
+# LXCs
+##############################
+
+module "nextcloud" {
+  source = "./lxc"
+  
+  name = "nextcloud"
+  vmid = 124
+  cores = 2
+  memory = 4096
+  rootfs = "32G"
+  start_on_boot = true
 }
 
-provider "proxmox" {
-  # References our vars.tf file to plug in the api_url 
-  pm_api_url = var.api_url
-  # References our secrets.tfvars file to plug in our token_id
-  pm_api_token_id = var.token_id
-  # References our secrets.tfvars to plug in our token_secret 
-  pm_api_token_secret = var.token_secret
-  # Default to `true` unless you have TLS working within your pve setup 
-  pm_tls_insecure = true
+module "rustdesk-server" {
+  source = "./lxc"
+  
+  name = "rustdesk-server"
+  vmid = 125
+  cores = 1
+  memory = 512
+  start_on_boot = true
 }
 
+module "music" {
+  source = "./lxc"
+  
+  name = "music"
+  vmid = 126
+  cores = 2
+  memory = 2048
+  start_on_boot = true
+}
+
+################################
