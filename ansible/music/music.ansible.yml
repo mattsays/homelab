@@ -14,8 +14,9 @@
       loop:
         - /opt/music/navidrome
         - /opt/music/deemix
-        - /opt/music/deemix/scripts
+        - /opt/music/scripts
         - /mnt/music
+        
 
     - name: Copy docker-compose.yml
       copy:
@@ -36,7 +37,7 @@
 
     - name: Copy Navidrome Scan Script
       copy:
-        dest: /opt/music/deemix/scripts/navidrome_scan.sh
+        dest: /opt/music/scripts/navidrome_scan.sh
         src: ./deemix/scripts/navidrome_scan.sh
         mode: '0755'
 

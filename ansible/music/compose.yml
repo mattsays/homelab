@@ -32,8 +32,10 @@ services:
     volumes:
       - /mnt/music/:/downloads
       - /opt/music/deemix:/config
-      - /opt/music/deemix/scripts/:/scripts
+      - /opt/music/scripts/:/scripts
     environment:
       - DEEMIX_SINGLE_USER=true
     ports:
       - 6595:6595
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
