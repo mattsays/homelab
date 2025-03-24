@@ -32,4 +32,22 @@ module "music" {
   start_on_boot = true
 }
 
+module "romm" {
+  source = "./lxc"
+  
+  name = "romm"
+  vmid = 127
+  cores = 2
+  memory = 2048
+  start_on_boot = true
+  
+  mountpoints = [ 
+    {
+      key = 0
+      mp = "/mnt/roms"
+      size = "20G"
+    } 
+  ]
+}
+
 ################################
