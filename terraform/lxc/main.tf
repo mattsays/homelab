@@ -24,6 +24,17 @@ variable "rootfs" {
   default = "8G"
 }
 
+variable "mountpoints" {
+  type = list(object({
+    key = number
+    mp = string
+    storage = optional(string, "local-lvm")
+    size = string
+  }))
+  default = []
+  description = "List of mountpoints to be added to the LXC container"
+}
+
 variable "start_on_boot" {
   type = bool
   default = false
@@ -91,6 +102,18 @@ resource "proxmox_lxc" "lxc" {
     storage = var.default_rootfs_storage
     size    = var.rootfs
   }
+  
+  dynamic "mountpoint" {
+      for_each = var.mountpoints
+      content {
+        key = "${mountpoint.value.key}"
+        slot = mountpoint.value.key
+        storage = "${mountpoint.value.storage}"
+        mp = "${mountpoint.value.mp}"
+        size = "${mountpoint.value.size}"
+      }
+    }
+  
 
   network {
     name   = "eth0"
