@@ -129,7 +129,7 @@ resource "proxmox_lxc" "lxc" {
   onboot = var.start_on_boot
   start = true
 
-  tags = "terraform;${var.name};${var.args}"
+  tags = "terraform;${var.name};${var.tags}"
 
 
   ssh_public_keys= file(var.ssh_keys["pub"])
