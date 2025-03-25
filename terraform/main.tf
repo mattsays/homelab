@@ -1,6 +1,18 @@
 # LXCs
 ##############################
 
+module "caddy" {
+  source = "./lxc"
+  
+  name = "caddy"
+  vmid = 121
+  cores = 1
+  memory = 1024
+  rootfs = "8G"
+  start_on_boot = true
+}
+
+
 module "nextcloud" {
   source = "./lxc"
   

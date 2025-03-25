@@ -1,0 +1,208 @@
+(tls) {
+        tls /etc/letsencrypt/live/puccia.org/fullchain.pem /etc/letsencrypt/live/puccia.org/privkey.pem
+}
+
+## Proxmox
+
+pve.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.1:8006 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+}
+
+# Proxmox Backup
+
+pvebackups.puccia.org, pbs.puccia.org {
+        import tls
+        reverse_proxy 100.97.64.127:8007 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+}
+
+# DNS
+pihole.puccia.org {
+        import tls
+	encode zstd gzip
+        redir / /admin{uri}
+	reverse_proxy 10.0.46.101:80
+}
+
+
+
+
+# Utils
+
+lan.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.110:8840
+}
+
+fast.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.111:5216
+}
+
+ldap.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.100:17170
+}
+
+sync.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.105:8384
+}
+
+metrics.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.107:3000
+}
+
+# VaultWarden
+
+vw.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.113:8000
+}
+
+
+# Notifications
+
+ntfy.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.103
+}
+
+# Homepage
+
+home.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.102:3000
+}
+
+# Media Arr Stack
+
+requests.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:5055
+}
+
+player.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:8096
+}
+
+prowlarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:9696
+}
+
+sonarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:8989
+}
+
+radarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:7878
+}
+
+bazarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:6767
+}
+
+qbit.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.233:8081
+}
+
+# Music Stack
+
+music.puccia.org, navidrome.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.126:4533
+}
+
+deemix.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.126:6595
+}
+
+##### Wireguard
+
+wg.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.120:10086
+}
+
+
+##### CLOUD #######
+#
+# Immich
+
+photos.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.119:2283
+}
+
+# CouchDB
+
+couchdb.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.114:5984
+}
+
+# Firefox
+
+firefox.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.109:5800
+}
+
+
+# ToDo app
+
+todo.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.117:3456
+}
+
+# MuOS
+
+muos.puccia.org {
+        import tls
+        reverse_proxy 100.72.140.76:9090
+}
+
+# Scrutiny
+
+smart.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.118:8080
+}
+
+# PartsDB
+
+parts.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.117
+}
+
+# Nextcloud
+
+https://cloud.puccia.org:443 {
+	import tls
+	reverse_proxy 10.0.46.124:11000
+}
+
+# Romm Manager
+
+romm.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.127
+}

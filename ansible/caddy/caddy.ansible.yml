@@ -1,0 +1,48 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Caddy
+  hosts: all
+  become: true
+  vars:
+    domain: puccia.org
+    base_dir: /opt/caddy
+    email: certs@{{ domain }}
+
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ base_dir }}"
+        - "{{ base_dir }}/config"
+        - "{{ base_dir }}/caddyfiles"
+        - "{{ base_dir }}/certbot"
+             
+    - name: Copy cloudflare.ini
+      copy:
+        dest: "{{ base_dir }}/certbot/cloudflare.ini"
+        src: ./cloudflare.ini   
+      
+    - name: Install Certbot
+      command: "apt-get install -y certbot python3-certbot-dns-cloudflare"
+      
+    - name: Run certbot
+      command: "certbot certonly --non-interactive --agree-tos --email {{ email }} --dns-cloudflare --dns-cloudflare-credentials /opt/caddy/certbot/cloudflare.ini -d *.{{ domain }}"
+        
+    - name: Copy compose.yml
+      copy:
+        dest: "{{ base_dir }}/compose.yml"
+        src: ./compose.yml
+    
+    - name: Copy Caddyfile
+      copy:
+        dest: "{{ base_dir }}/caddyfiles/Caddyfile"
+        src: ./Caddyfile
+    
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
+      args:
+        chdir: "{{ base_dir }}"

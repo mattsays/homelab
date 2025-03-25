@@ -1,0 +1,18 @@
+services:
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - /opt/caddy/caddyfiles/:/etc/caddy/
+      - caddy_data:/data
+      - /opt/caddy/config/:/config
+      - /etc/letsencrypt/:/etc/letsencrypt/
+volumes:
+  caddy_data:
+  caddy_config:

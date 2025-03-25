@@ -69,6 +69,10 @@ variable "nic_name" {
     default = "vmbr1"
 }
 
+variable "tags" {
+    default = ""
+}
+
 terraform {
   required_providers {
     proxmox = {
@@ -124,7 +128,10 @@ resource "proxmox_lxc" "lxc" {
   
   onboot = var.start_on_boot
   start = true
-  
+
+  tags = "terraform;${var.name};${var.args}"
+
+
   ssh_public_keys= file(var.ssh_keys["pub"])
 
   #creates ssh connection to check when the CT is ready for ansible provisioning
