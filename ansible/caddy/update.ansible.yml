@@ -1,0 +1,15 @@
+- name: Update Caddyfile
+  hosts: all
+  become: true
+  vars:
+    domain: puccia.org
+    base_dir: /opt/caddy
+
+  tasks:
+    - name: Update Caddyfile
+      copy:
+        dest: "{{ base_dir }}/caddyfiles/Caddyfile"
+        src: ./Caddyfile
+    
+    - name: Restart Caddy compose
+      command: docker compose -f "{{ base_dir }}/compose.yml" restart

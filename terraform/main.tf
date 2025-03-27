@@ -62,4 +62,14 @@ module "romm" {
   ]
 }
 
+module "actualbudget" {
+  source = "./lxc"
+  
+  name = "actualbudget"
+  vmid = 128
+  cores = 2
+  memory = 2048
+  start_on_boot = true
+}
+
 ################################

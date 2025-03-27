@@ -7,5 +7,6 @@ secrets.tfvars
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
-secrets.env
+
 cloudflare.ini
+*.env

@@ -206,3 +206,10 @@ romm.puccia.org {
         import tls
         reverse_proxy 10.0.46.127
 }
+
+# Firefly Finance Manager
+
+finance.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.128:5006
+}
