@@ -172,13 +172,6 @@ todo.puccia.org {
         reverse_proxy 10.0.46.117:3456
 }
 
-# MuOS
-
-muos.puccia.org {
-        import tls
-        reverse_proxy 100.72.140.76:9090
-}
-
 # Scrutiny
 
 smart.puccia.org {
@@ -205,6 +198,13 @@ https://cloud.puccia.org:443 {
 romm.puccia.org {
         import tls
         reverse_proxy 10.0.46.127
+}
+
+# MuOS
+
+muos.puccia.org {
+    import tls
+    reverse_proxy 100.70.61.50:9090
 }
 
 # Firefly Finance Manager
