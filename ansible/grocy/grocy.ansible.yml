@@ -1,0 +1,30 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Grocy
+  hosts: all
+  become: true
+  vars:
+    base_dir: /opt/grocy
+
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ base_dir }}"
+        - "{{ base_dir }}/config/"
+        - "{{ base_dir }}/config/core"
+                
+    - name: Copy compose.yml file
+      copy:
+        src: compose.yml
+        dest: "{{ base_dir }}/compose.yml"
+        mode: '0644'
+        
+    - name: Start Grocy
+      command: docker compose -f {{ base_dir }}/compose.yml up -d
+      args:
+        chdir: "{{ base_dir }}"

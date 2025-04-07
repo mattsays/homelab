@@ -72,4 +72,14 @@ module "actualbudget" {
   start_on_boot = true
 }
 
+module "grocy" {
+  source = "./lxc"
+  
+  name = "grocy"
+  vmid = 129
+  cores = 1
+  memory = 1024
+  start_on_boot = true
+}
+
 ################################

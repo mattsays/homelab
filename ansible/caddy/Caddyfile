@@ -213,3 +213,10 @@ finance.puccia.org {
         import tls
         reverse_proxy 10.0.46.128:5006
 }
+
+# Grocy 
+
+grocy.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.129:9283
+}
