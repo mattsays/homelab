@@ -82,4 +82,16 @@ module "grocy" {
   start_on_boot = true
 }
 
+module "books" {
+  source = "./lxc"
+  
+  name = "books"
+  vmid = 130
+  cores = 2
+  memory = 2048
+  start_on_boot = true
+}
+
+
+
 ################################

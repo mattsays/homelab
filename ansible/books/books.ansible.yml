@@ -1,0 +1,63 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Books Stack
+  hosts: all
+  become: true
+  vars:
+    base_dir: /opt/books
+    user: books
+
+  tasks:
+    - name: Install sudo package
+      package:
+        name: sudo
+        state: present
+          
+    - name: Create {{ user }} user
+      user:
+        name: "{{ user }}"
+        comment: "{{ user }} Service User"
+        shell: /bin/bash
+        home: /home/{{ user }}
+        create_home: yes
+        state: present
+
+    - name: Configure sudo access for {{ user }} user
+      lineinfile:
+        path: /etc/sudoers.d/{{ user }}
+        line: "{{ user }} ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        mode: 0440
+        create: yes
+        validate: 'visudo -cf %s'
+        
+    - name: Add {{ user }} to docker group
+      user:
+        name: "{{ user }}"
+        groups: docker
+        append: yes
+
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0777'
+        owner: "{{ user }}"
+        group: "{{ user }}"
+      loop:
+        - "{{ base_dir }}"
+        - "{{ base_dir }}/library"
+        - "{{ base_dir }}/config/calibre"
+             
+    - name: Copy compose.yml
+      copy:
+        dest: "{{ base_dir }}/compose.yml"
+        src: ./compose.yml
+    
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
+      become: yes
+      become_user: "{{ user }}"
+      args:
+        chdir: "{{ base_dir }}"
