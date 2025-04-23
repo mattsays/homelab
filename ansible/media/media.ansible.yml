@@ -1,0 +1,44 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Media Services
+  hosts: all
+  become: true
+  vars:
+    base_dir: /opt/yams
+    data_dir: /mnt/data
+
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ base_dir }}"
+        - "{{ data_dir }}/blackhole"
+        - "{{ data_dir }}/downloads/"
+        - "{{ data_dir }}/downloads/torrents"
+        - "{{ data_dir }}/movies"
+        - "{{ data_dir }}/tvshows"
+
+    - name: Copy yams archive
+      copy:
+        dest: "{{ base_dir }}/"
+        src: ./yams.tar.gz
+
+    - name: Extract yams archive
+      unarchive:
+        src: "{{ base_dir }}/yams.tar.gz"
+        dest: "{{ base_dir }}/"
+        remote_src: yes
+
+    - name: Remove yams archive
+      file:
+        path: "{{ base_dir }}/yams.tar.gz"
+        state: absent
+
+    - name: Start Docker Compose Services
+      command: yams start
+      args:
+        chdir: "{{ base_dir }}"

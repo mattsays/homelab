@@ -88,37 +88,37 @@ home.puccia.org {
 
 requests.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:5055
+        reverse_proxy 10.0.46.105:5055
 }
 
 player.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:8096
+        reverse_proxy 10.0.46.105:8096
 }
 
 prowlarr.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:9696
+        reverse_proxy 10.0.46.105:9696
 }
 
 sonarr.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:8989
+        reverse_proxy 10.0.46.105:8989
 }
 
 radarr.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:7878
+        reverse_proxy 10.0.46.105:7878
 }
 
 bazarr.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:6767
+        reverse_proxy 10.0.46.105:6767
 }
 
 qbit.puccia.org {
         import tls
-        reverse_proxy 10.0.46.233:8081
+        reverse_proxy 10.0.46.105:8081
 }
 
 # Music Stack
@@ -219,4 +219,11 @@ finance.puccia.org {
 grocy.puccia.org {
         import tls
         reverse_proxy 10.0.46.129:9283
+}
+
+# Calibre
+
+calibre.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.130:8080
 }

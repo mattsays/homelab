@@ -1,6 +1,27 @@
 # LXCs
 ##############################
 
+module "media" {
+  source = "./lxc"
+  
+  name = "media"
+  vmid = 105
+  cores = 4
+  memory = 8192
+  rootfs = "16G"
+  start_on_boot = true
+  
+  mountpoints = [ 
+    {
+      key = 0
+      mp = "/mnt/data"
+      storage = "big_data"
+      size = "1024G"
+    } 
+  ]
+}
+
+
 module "caddy" {
   source = "./lxc"
   
