@@ -11,3 +11,4 @@ terraform.tfvars
 cloudflare.ini
 *.env
 yams.tar.gz
+.DS_Store
