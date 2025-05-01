@@ -227,3 +227,27 @@ calibre.puccia.org {
         import tls
         reverse_proxy 10.0.46.130:8080
 }
+
+
+# Reactive Resume
+
+resume.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.131:3000
+}
+
+
+# Mealie
+
+mealie.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.132:9925
+}
+
+
+# Overleaf
+
+latex.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.133:80
+}

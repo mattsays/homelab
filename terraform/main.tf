@@ -113,6 +113,36 @@ module "books" {
   start_on_boot = true
 }
 
+module "reactive-resume" {
+  source = "./lxc"
+  
+  name = "reactive-resume"
+  vmid = 131
+  cores = 2
+  memory = 3072
+  start_on_boot = true
+}
+
+module "mealie" {
+  source = "./lxc"
+  
+  name = "mealie"
+  vmid = 132
+  cores = 1
+  memory = 2048
+  start_on_boot = true
+}
+
+module "overleaf" {
+  source = "./lxc"
+  
+  name = "overleaf"
+  vmid = 133
+  cores = 2
+  memory = 3072
+  start_on_boot = true
+  rootfs = "16G"
+}
 
 
 ################################

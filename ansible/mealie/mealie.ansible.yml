@@ -1,0 +1,9 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+
+- import_playbook: ../docker-compose/docker-compose.ansible.yml
+  vars:
+    app_name: mealie
+    data_dirs:
+      - data
+    use_secrets: true

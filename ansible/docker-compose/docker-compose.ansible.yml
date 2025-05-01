@@ -1,0 +1,40 @@
+---
+- name: Install Application
+  hosts: "{{ hosts_group | default('all') }}"
+  become: "{{ become_sudo | default(true) }}"
+  vars:
+    app_name: "{{ app_name | default('app') }}"
+    base_dir: "{{ base_dir | default('/opt/' + app_name) }}"
+    data_dirs: "{{ data_dirs | default(['data']) }}"
+    use_secrets: "{{ use_secrets | default(false) }}"
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "/opt/{{ app_name }}/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ data_dirs }}"
+        
+    - name: Copy compose.yml
+      copy:
+        dest: "/opt/{{ app_name }}/compose.yml"
+        src: "{{ playbook_dir }}/../{{ app_name }}/compose.yml"
+    
+    - name: Copy secrets.env
+      copy:
+        dest: "/opt/{{ app_name }}/secrets.env"
+        src: "{{ playbook_dir }}/../{{ app_name }}/secrets.env"
+      when: use_secrets
+    
+    - name: Copy custom files
+      copy:
+        dest: "/opt/{{ app_name }}/{{ item.dest | default(item.src | basename) }}"
+        src: "{{ playbook_dir }}/../{{ app_name }}/{{ item.src }}"
+        mode: "{{ item.mode | default('0644') }}"
+      loop: "{{ custom_files }}"
+      when: custom_files | length > 0
+
+    - name: Start Docker Compose Services
+      command: "docker compose -f /opt/{{ app_name }}/compose.yml up -d"
+      args:
+        chdir: "/opt/{{ app_name }}"
