@@ -1,0 +1,25 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Beatbump
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /opt/music/ # Aggiungi la directory per beatbump
+
+    - name: Copy compose.yml
+      copy:
+        dest: /opt/music/compose.yml
+        src: ./compose.yml
+
+    - name: Start Docker Compose Services Beatbump
+      command: docker compose -f /opt/music/compose.yml up -d
+      args:
+        chdir: /opt/music/

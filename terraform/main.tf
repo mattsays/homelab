@@ -144,5 +144,14 @@ module "overleaf" {
   rootfs = "16G"
 }
 
+module "beatbump" {
+  source = "./lxc"
+  
+  name = "beatbump"
+  vmid = 134
+  cores = 1
+  memory = 2048
+  start_on_boot = true
+}
 
 ################################
