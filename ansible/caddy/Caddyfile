@@ -17,11 +17,18 @@ pve.puccia.org {
 
 pvebackups.puccia.org, pbs.puccia.org {
         import tls
-        reverse_proxy 100.97.64.127:8007 {
+        reverse_proxy 100.109.55.6:8007 {
                 transport http {
                         tls_insecure_skip_verify
                 }
         }
+}
+
+# PocketID
+
+pocketid.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.104:1411
 }
 
 # DNS
@@ -31,8 +38,6 @@ pihole.puccia.org {
         redir / /admin{uri}
 	reverse_proxy 10.0.46.101:80
 }
-
-
 
 
 # Utils
@@ -94,6 +99,11 @@ requests.puccia.org {
 player.puccia.org {
         import tls
         reverse_proxy 10.0.46.105:8096
+}
+
+suggestarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.105:5000
 }
 
 prowlarr.puccia.org {

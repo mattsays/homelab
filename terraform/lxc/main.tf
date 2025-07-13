@@ -83,13 +83,18 @@ terraform {
   }
 }
 
+variable "privileged" {
+  type = bool
+  default = false
+}
+
 resource "proxmox_lxc" "lxc" {
   target_node  = var.proxmox_node
   hostname     = "${var.name}"
   ostemplate   = var.lxc_template
   vmid         = var.vmid
   
-  unprivileged = true
+  unprivileged = !var.privileged
 
   features {
     nesting = true

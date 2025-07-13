@@ -1,6 +1,16 @@
 # LXCs
 ##############################
 
+module "pocketid" {
+  source = "./lxc"
+  
+  name = "pocketid"
+  vmid = 104
+  cores = 2
+  memory = 2048
+  start_on_boot = true  
+}
+
 module "media" {
   source = "./lxc"
   
@@ -10,6 +20,7 @@ module "media" {
   memory = 8192
   rootfs = "16G"
   start_on_boot = true
+  privileged = true
   
   mountpoints = [ 
     {
