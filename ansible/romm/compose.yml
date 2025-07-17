@@ -20,6 +20,10 @@ services:
       #- STEAMGRIDDB_API_KEY= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#steamgriddb
       - SCREENSCRAPER_USER= # Use your ScreenScraper username and password
       - SCREENSCRAPER_PASSWORD= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#screenscraper
+      - OIDC_ENABLED=true # Enable OIDC authentication
+      - OIDC_PROVIDER=pocketid
+      - OIDC_REDIRECT_URI=https://romm.puccia.org/api/oauth/openid
+      - OIDC_SERVER_APPLICATION_URL=https://pocketid.puccia.org
     env_file: secrets.env
     volumes:
       - romm_resources:/romm/resources # Resources fetched from IGDB (covers, screenshots, etc.)
@@ -43,6 +47,7 @@ services:
       - MARIADB_DATABASE=romm
       - MARIADB_USER=romm-user
       #- MARIADB_PASSWORD=
+
     env_file: secrets.env
     volumes:
       - mysql_data:/var/lib/mysql
