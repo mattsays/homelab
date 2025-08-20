@@ -5,7 +5,7 @@ volumes:
 
 services:
   romm:
-    image: rommapp/romm:latest
+    image: rommapp/romm:4.1.3
     container_name: romm
     restart: unless-stopped
     environment:
@@ -20,6 +20,8 @@ services:
       #- STEAMGRIDDB_API_KEY= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#steamgriddb
       - SCREENSCRAPER_USER= # Use your ScreenScraper username and password
       - SCREENSCRAPER_PASSWORD= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#screenscraper
+      - HASHEOUS_API_ENABLED=true # Enable Hasheous API
+      - PLAYMATCH_API_ENABLED=true # Enable PlayMatch API
       - OIDC_ENABLED=true # Enable OIDC authentication
       - OIDC_PROVIDER=pocketid
       - OIDC_REDIRECT_URI=https://romm.puccia.org/api/oauth/openid
