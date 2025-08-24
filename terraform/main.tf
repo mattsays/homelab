@@ -155,25 +155,28 @@ module "mealie" {
   start_on_boot = true
 }
 
-module "overleaf" {
+module "homebox" {
   source = "./lxc"
   
-  name = "overleaf"
+  name = "homebox"
   vmid = 133
-  cores = 2
-  memory = 3072
+  cores = 1
+  memory = 1024
+  rootfs = "4G"
   start_on_boot = true
-  rootfs = "16G"
+
 }
 
-module "beatbump" {
+module "spoolman" {
   source = "./lxc"
   
-  name = "beatbump"
+  name = "spoolman"
   vmid = 134
   cores = 1
-  memory = 2048
+  memory = 1024
+  rootfs = "4G"
   start_on_boot = true
+
 }
 
 ################################

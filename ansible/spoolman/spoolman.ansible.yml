@@ -1,0 +1,28 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+    
+- name: Install Spoolman
+  hosts: all
+  become: true
+  vars:
+    base_dir: /opt/spoolman
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        group: "1000"
+        owner: "1000"
+      loop:
+        - "{{ base_dir }}/data"
+        
+    - name: Copy compose.yml
+      copy:
+        dest: "{{ base_dir }}/compose.yml"
+        src: ./compose.yml
+    
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
+      args:
+        chdir: "{{ base_dir }}"

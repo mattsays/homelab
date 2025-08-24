@@ -1,25 +1,26 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
     
-- name: Install Beatbump
+- name: Install Homebox
   hosts: all
   become: true
+  vars:
+    base_dir: /opt/homebox
   tasks:
-
     - name: Create necessary directories
       file:
         path: "{{ item }}"
         state: directory
         mode: '0755'
       loop:
-        - /opt/music/ # Aggiungi la directory per beatbump
-
+        - "{{ base_dir }}/data"
+        
     - name: Copy compose.yml
       copy:
-        dest: /opt/music/compose.yml
+        dest: "{{ base_dir }}/compose.yml"
         src: ./compose.yml
-
-    - name: Start Docker Compose Services Beatbump
-      command: docker compose -f /opt/music/compose.yml up -d
+    
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
       args:
-        chdir: /opt/music/
+        chdir: "{{ base_dir }}"

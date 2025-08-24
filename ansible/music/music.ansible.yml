@@ -16,9 +16,13 @@
         - /opt/music/deemix
         - /opt/music/scripts
         - /mnt/music
+        - /opt/music/spotizerr
+        - /opt/music/spotizerr/data
+        - /opt/music/spotizerr/logs
+        - /opt/music/spotizerr/cache
         
 
-    - name: Copy docker-compose.yml
+    - name: Copy compose.yml
       copy:
         dest: /opt/music/compose.yml
         src: ./compose.yml

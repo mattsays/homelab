@@ -39,3 +39,30 @@ services:
       - 6595:6595
     extra_hosts:
         - "host.docker.internal:host-gateway"
+  
+  spotizerr:
+    image: cooldockerizer93/spotizerr
+    volumes:
+    # Ensure these directories and the .cache file exist and are writable by the container user
+    - /opt/music/spotizerr/data:/app/data # data directory, contains config, creds, watch, history
+    - /mnt/music/:/app/downloads # downloads directory, contains downloaded files
+    - /opt/music/spotizerr/logs:/app/logs # logs directory, contains logs
+    ports:
+    # Port to expose the app on
+    - 7171:7171
+    container_name: spotizerr-app
+    restart: unless-stopped
+    env_file: secrets.env
+    depends_on:
+    - redis
+  redis:
+    image: redis:alpine
+    container_name: spotizerr-redis
+    restart: unless-stopped
+    env_file: secrets.env
+    volumes:
+    - redis-data:/data
+    command: sh -c 'redis-server --requirepass "$REDIS_PASSWORD" --appendonly yes'
+volumes:
+  redis-data:
+    driver: local

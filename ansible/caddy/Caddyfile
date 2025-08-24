@@ -273,3 +273,17 @@ ai.puccia.org {
         import tls
         reverse_proxy 10.0.46.110:3000
 }
+
+# Homebox
+
+inventory.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.133:3100
+}
+
+# Spoolman
+
+spools.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.134:7912
+}

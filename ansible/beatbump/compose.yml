@@ -1,7 +1,0 @@
-services:
-  beatbump:
-    image: ghcr.io/giwty/beatbump
-    container_name: beatbump_container
-    ports:
-      - "8080:8080" 
-    restart: unless-stopped
