@@ -27,3 +27,12 @@ services:
       retries: 3
       start_period: 20s
     restart: unless-stopped
+  
+  actual-auto-sync:
+    image: seriouslag/actual-auto-sync:latest
+    env_file: ./secrets.env
+    environment:
+      - ACTUAL_SERVER_URL=http://actual_server:5006
+      - CRON_SCHEDULE=0 1 * * *
+      - LOG_LEVEL=info
+      - TIMEZONE=Europe/Rome

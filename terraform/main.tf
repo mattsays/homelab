@@ -32,6 +32,17 @@ module "media" {
   ]
 }
 
+module "openwebui" {
+  source = "./lxc"
+  
+  name = "openwebui"
+  vmid = 110
+  cores = 2
+  memory = 4096
+  rootfs = "25G"
+  start_on_boot = true
+}
+
 
 module "caddy" {
   source = "./lxc"

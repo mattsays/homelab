@@ -1,11 +1,11 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
     
-- name: Install ActualBudget
+- name: Install OpenWebUI
   hosts: all
   become: true
   vars:
-    base_dir: /opt/actualbudget
+    base_dir: /opt/openwebui
 
   tasks:
     - name: Create necessary directories
@@ -15,21 +15,21 @@
         mode: '0755'
       loop:
         - "{{ base_dir }}"
+        - "{{ base_dir }}/config"
         - "{{ base_dir }}/data"
-                
-    - name: Copy compose.yml file
+             
+    - name: Copy secrets.env
       copy:
-        src: compose.yml
-        dest: "{{ base_dir }}/compose.yml"
-        mode: '0644'
-    
-    - name: Copy secrets.env file
-      copy:
-        src: secrets.env
         dest: "{{ base_dir }}/secrets.env"
+        src: ./secrets.env
         mode: '0600'
-
-    - name: Start ActualBudget
-      command: docker compose -f {{ base_dir }}/compose.yml up -d
+      
+    - name: Copy compose.yml
+      copy:
+        dest: "{{ base_dir }}/compose.yml"
+        src: ./compose.yml
+        
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
       args:
         chdir: "{{ base_dir }}"

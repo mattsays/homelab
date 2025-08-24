@@ -266,3 +266,10 @@ latex.puccia.org {
         import tls
         reverse_proxy 10.0.46.133:80
 }
+
+# OpenWebUI
+
+ai.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.110:3000
+}

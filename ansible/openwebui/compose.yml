@@ -1,0 +1,14 @@
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    environment:
+      - OAUTH_UPDATE_PICTURE_ON_LOGIN=true
+      - OPENID_PROVIDER_URL=https://pocketid.puccia.org/.well-known/openid-configuration
+      - OAUTH_PROVIDER_NAME=PocketID
+      - OPENID_REDIRECT_URI=https://ai.puccia.org/oauth/oidc/callback
+      - ENABLE_OAUTH_SIGNUP=true
+    env_file: secrets.env
+    volumes:
+      - /opt/openwebui/data:/app/backend/data
