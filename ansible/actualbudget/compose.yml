@@ -31,6 +31,9 @@ services:
   actual-auto-sync:
     image: seriouslag/actual-auto-sync:latest
     env_file: ./secrets.env
+    restart: unless-stopped
+    depends_on:
+      - actual_server
     environment:
       - ACTUAL_SERVER_URL=http://actual_server:5006
       - CRON_SCHEDULE=0 1 * * *
