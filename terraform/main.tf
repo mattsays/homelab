@@ -162,7 +162,7 @@ module "homebox" {
   vmid = 133
   cores = 1
   memory = 1024
-  rootfs = "4G"
+  rootfs = "16G"
   start_on_boot = true
 
 }

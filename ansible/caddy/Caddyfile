@@ -82,12 +82,6 @@ ntfy.puccia.org {
         reverse_proxy 10.0.46.103
 }
 
-# Homepage
-
-home.puccia.org {
-        import tls
-        reverse_proxy 10.0.46.102:3000
-}
 
 # Media Arr Stack
 
@@ -276,7 +270,7 @@ ai.puccia.org {
 
 # Homebox
 
-inventory.puccia.org {
+inventory.puccia.org, home.puccia.org {
         import tls
         reverse_proxy 10.0.46.133:3100
 }
