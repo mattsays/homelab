@@ -179,4 +179,15 @@ module "spoolman" {
 
 }
 
+
+module "plantit" {
+  source = "./lxc"
+  name = "plantit"
+  vmid = 102
+  cores = 1
+  memory = 2048
+  rootfs = "8G"
+  start_on_boot = true
+}
+
 ################################
