@@ -1,11 +1,11 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
-
-- name: Install PlantIt
+    
+- name: Install Hortusfox
   hosts: all
   become: true
   vars:
-    base_dir: /opt/plantit
+    base_dir: /opt/hortusfox
   tasks:
     - name: Create necessary directories
       file:
@@ -14,18 +14,16 @@
         mode: '0755'
       loop:
         - "{{ base_dir }}/data"
-        - "{{ base_dir }}/upload-dir"
         
     - name: Copy compose.yml
       copy:
         dest: "{{ base_dir }}/compose.yml"
         src: ./compose.yml
     
-    - name: Copy server.env
+    - name: Copy secrets.env
       copy:
-        dest: "{{ base_dir }}/server.env"
-        src: ./server.env
-        mode: '0600'
+        dest: "{{ base_dir }}/secrets.env"
+        src: ./secrets.env   
 
     - name: Start Docker Compose Services
       command: docker compose -f "{{ base_dir }}/compose.yml" up -d
