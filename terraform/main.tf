@@ -180,9 +180,9 @@ module "spoolman" {
 }
 
 
-module "hortusfox" {
+module "plantit" {
   source = "./lxc"
-  name = "hortusfox"
+  name = "plantit"
   vmid = 102
   cores = 1
   memory = 2048

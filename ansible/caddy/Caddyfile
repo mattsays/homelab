@@ -286,5 +286,10 @@ spools.puccia.org {
 
 plants.puccia.org {
         import tls
+        reverse_proxy 10.0.46.102:3000
+}
+
+plantsapi.puccia.org {
+        import tls
         reverse_proxy 10.0.46.102:8080
 }
