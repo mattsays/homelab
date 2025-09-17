@@ -43,6 +43,27 @@ module "openwebui" {
   start_on_boot = true
 }
 
+module "immich" {
+  source = "./lxc"
+  
+  name = "immich"
+  vmid = 119
+  cores = 2
+  memory = 4096
+  rootfs = "16G"
+  start_on_boot = true
+
+  mountpoints = [ 
+    {
+      key = 0
+      mp = "/mnt/cloud"
+      storage = "big_data"
+      size = "250G"
+    } 
+  ]
+}
+
+
 
 module "caddy" {
   source = "./lxc"
@@ -184,7 +205,7 @@ module "plantit" {
   source = "./lxc"
   name = "plantit"
   vmid = 102
-  cores = 1
+  cores = 4
   memory = 2048
   rootfs = "8G"
   start_on_boot = true

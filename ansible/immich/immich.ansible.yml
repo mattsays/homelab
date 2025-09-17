@@ -1,0 +1,58 @@
+---
+- import_playbook: ../docker/docker.ansible.yml
+
+- name: Install Immich
+  hosts: all
+  become: true
+  vars:
+    base_dir: /opt/immich
+  tasks:
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ base_dir }}"
+        
+    - name: Copy compose.yml
+      copy:
+        dest: "{{ base_dir }}/compose.yml"
+        src: ./compose.yml
+    
+    - name: Copy .env
+      copy:
+        dest: "{{ base_dir }}/.env"
+        src: ./.env
+        mode: '0600'
+
+    - name: Copy backup.sh
+      copy:
+        dest: "{{ base_dir }}/backup.sh"
+        src: ./backup.sh
+        mode: '0755'
+
+    - name: Copy backblaze.env
+      copy:
+        dest: "{{ base_dir }}/backblaze.env"
+        src: ./backblaze.env
+        mode: '0600'
+
+    - name: Copy restic password file
+      copy:
+        dest: "{{ base_dir }}/backblaze_passwd"
+        src: ./backblaze_passwd
+        mode: '0600'
+
+    - name: Add backup cronjob
+      cron:
+        name: "Immich backup"
+        minute: "0"
+        hour: "3"
+        job: "SHELL=/bin/bash /opt/immich/backup.sh > /var/log/backup-restic.log 2>&1"
+        user: root
+
+    - name: Start Docker Compose Services
+      command: docker compose -f "{{ base_dir }}/compose.yml" up -d
+      args:
+        chdir: "{{ base_dir }}"
