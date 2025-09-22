@@ -211,4 +211,15 @@ module "plantit" {
   start_on_boot = true
 }
 
+module "siyuan" {
+  source = "./lxc"
+  name = "siyuan"
+  vmid = 135
+  cores = 3
+  memory = 4096
+  rootfs = "8G"
+  start_on_boot = true
+
+}
+
 ################################

@@ -15,9 +15,9 @@ pve.puccia.org {
 
 # Proxmox Backup
 
-pvebackups.puccia.org, pbs.puccia.org {
+pbs.puccia.org {
         import tls
-        reverse_proxy 100.109.55.6:8007 {
+        reverse_proxy oracle.puccia.org:8007 {
                 transport http {
                         tls_insecure_skip_verify
                 }
@@ -127,7 +127,12 @@ qbit.puccia.org {
 
 # Music Stack
 
-music.puccia.org, navidrome.puccia.org {
+music.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.126:8096
+}
+
+navidrome.puccia.org {
         import tls
         reverse_proxy 10.0.46.126:4533
 }
