@@ -15,7 +15,7 @@ pve.puccia.org {
 
 # Proxmox Backup
 
-pbs.puccia.org {
+pbs.puccia.org, pvebackups.puccia.org {
         import tls
         reverse_proxy oracle.puccia.org:8007 {
                 transport http {
