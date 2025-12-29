@@ -71,9 +71,8 @@ metrics.puccia.org {
 
 vw.puccia.org {
         import tls
-        reverse_proxy 10.0.46.113:8000
+        reverse_proxy 10.0.46.117:8000
 }
-
 
 # Notifications
 
@@ -113,6 +112,16 @@ sonarr.puccia.org {
 radarr.puccia.org {
         import tls
         reverse_proxy 10.0.46.105:7878
+}
+
+kapowarr.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.105:5656
+}
+
+reader.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.105:25600
 }
 
 bazarr.puccia.org {
@@ -297,4 +306,18 @@ plants.puccia.org {
 plantsapi.puccia.org {
         import tls
         reverse_proxy 10.0.46.102:8080
+}
+
+# PeaNUT
+
+nut.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.135:3000
+}
+
+# Gitea
+
+git.puccia.org {
+        import tls
+        reverse_proxy 10.0.46.136:3000
 }

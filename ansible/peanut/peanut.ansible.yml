@@ -1,11 +1,12 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
     
-- name: Install Homebox
+- name: Install PeaNUT
   hosts: all
   become: true
   vars:
-    base_dir: /opt/homebox
+    base_dir: /opt/peanut
+
   tasks:
     - name: Create necessary directories
       file:
@@ -13,17 +14,12 @@
         state: directory
         mode: '0755'
       loop:
-        - "{{ base_dir }}/data"
+        - "{{ base_dir }}/config"
         
     - name: Copy compose.yml
       copy:
         dest: "{{ base_dir }}/compose.yml"
         src: ./compose.yml
-
-    - name: Copy secrets.env
-      copy:
-        dest: "{{ base_dir }}/secrets.env"
-        src: ./secrets.env
     
     - name: Start Docker Compose Services
       command: docker compose -f "{{ base_dir }}/compose.yml" up -d

@@ -1,0 +1,4 @@
+[admin]
+  password = CHANGEME
+  actions = SET
+  instcmds = ALL

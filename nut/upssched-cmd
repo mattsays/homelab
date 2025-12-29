@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# === ntfy Configuration ===
+NTFY_SERVER="https://ntfy.puccia.org"  # Or https://ntfy.sh if using public server
+NTFY_TOPIC="ups"              # Your personal topic
+NTFY_PRIORITY_URGENT="urgent"
+NTFY_PRIORITY_HIGH="high"
+NTFY_PRIORITY_DEFAULT="default"
+NTFY_PRIORITY_LOW="low"
+
+# Function to send ntfy notifications
+send_ntfy() {
+    local title="$1"
+    local message="$2"
+    local priority="${3:-default}"
+    local tags="${4:-electric_plug}"
+    
+    curl -H "Title: $title" \
+         -H "Priority: $priority" \
+         -H "Tags: $tags" \
+         -d "$message" \
+         "$NTFY_SERVER/$NTFY_TOPIC"
+}
+
+# Function for logging
+log_event() {
+    logger -t upssched "$1"
+    echo "[$(date)] $1" >> /var/log/nut-events.log
+}
+
+# === Event handling ===
+case $1 in
+    
+    onbatt)
+        # UPS on battery for 30 seconds
+        log_event "⚠️ UPS on battery for 30+ seconds"
+        send_ntfy \
+            "⚠️ UPS On Battery" \
+            "Proxmox server is running on battery for over 30 seconds. Check power supply." \
+            "$NTFY_PRIORITY_HIGH" \
+            "warning,zap"
+        ;;
+    
+    onbatt-resolved)
+        # Power restored
+        log_event "✅ Power restored"
+        send_ntfy \
+            "✅ Power Restored" \
+            "Electrical power has returned. System is stable." \
+            "$NTFY_PRIORITY_DEFAULT" \
+            "white_check_mark,electric_plug"
+        ;;
+    
+    lowbatt-shutdown)
+        # LOW BATTERY - EMERGENCY
+        log_event "🚨 LOW BATTERY! Starting shutdown"
+        send_ntfy \
+            "🚨 LOW BATTERY!" \
+            "UPS battery almost depleted. Automatic shutdown in progress to protect data." \
+            "$NTFY_PRIORITY_URGENT" \
+            "rotating_light,battery"
+        
+        # Start shutdown
+        /usr/local/bin/proxmox-ups-shutdown.sh &
+        ;;
+    
+    commbad)
+        # Communication lost for 60+ seconds
+        log_event "❌ Communication with UPS lost for 60+ seconds"
+        send_ntfy \
+            "❌ UPS Not Responding" \
+            "Unable to communicate with UPS for over 60 seconds. Check USB/serial cable." \
+            "$NTFY_PRIORITY_HIGH" \
+            "x,warning"
+        ;;
+    
+    commok)
+        # Communication restored
+        log_event "✅ Communication with UPS restored"
+        send_ntfy \
+            "✅ UPS Connected" \
+            "Communication with UPS has been restored." \
+            "$NTFY_PRIORITY_DEFAULT" \
+            "white_check_mark"
+        ;;
+    
+    replbatt)
+        # Battery needs replacement
+        log_event "🔋 UPS battery needs replacement"
+        send_ntfy \
+            "🔋 Replace Battery" \
+            "UPS indicates battery needs replacement. Schedule maintenance." \
+            "$NTFY_PRIORITY_HIGH" \
+            "battery,warning"
+        ;;
+    
+    forced-shutdown)
+        # Forced shutdown
+        log_event "⚠️ Forced shutdown commanded by UPS"
+        send_ntfy \
+            "⚠️ Forced Shutdown" \
+            "UPS has commanded a forced system shutdown." \
+            "$NTFY_PRIORITY_URGENT" \
+            "rotating_light"
+        ;;
+    
+    nocomm)
+        # No communication for 30+ seconds
+        log_event "⚠️ No communication with UPS"
+        send_ntfy \
+            "⚠️ UPS Not Communicating" \
+            "Unable to communicate with UPS. Check connection." \
+            "$NTFY_PRIORITY_HIGH" \
+            "warning"
+        ;;
+    
+    *)
+        log_event "Unknown event: $1"
+        ;;
+esac
+
+exit 0

@@ -9,6 +9,7 @@ services:
       - OAUTH_PROVIDER_NAME=PocketID
       - OPENID_REDIRECT_URI=https://ai.puccia.org/oauth/oidc/callback
       - ENABLE_OAUTH_SIGNUP=true
+      - ENABLE_PASSWORD_AUTH=false
     env_file: secrets.env
     volumes:
       - /opt/openwebui/data:/app/backend/data

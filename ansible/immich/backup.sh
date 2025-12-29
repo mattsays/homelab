@@ -2,7 +2,7 @@
 # Paths
 UPLOAD_LOCATION="/mnt/cloud/library"
 # Backblaze B2 credentials
-. /root/immich/backblaze.env
+. /opt/immich/backblaze.env
 # URL ntfy
 NTFY_URL="ntfy.puccia.org/immich"
 

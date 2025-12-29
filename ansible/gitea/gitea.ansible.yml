@@ -1,11 +1,12 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
-    
-- name: Install Homebox
+
+- name: Install Gitea
   hosts: all
   become: true
   vars:
-    base_dir: /opt/homebox
+    base_dir: /opt/gitea
+
   tasks:
     - name: Create necessary directories
       file:
@@ -14,6 +15,8 @@
         mode: '0755'
       loop:
         - "{{ base_dir }}/data"
+        - "{{ base_dir }}/data/postgres"
+        - "{{ base_dir }}/data/gitea"
         
     - name: Copy compose.yml
       copy:
@@ -24,7 +27,7 @@
       copy:
         dest: "{{ base_dir }}/secrets.env"
         src: ./secrets.env
-    
+
     - name: Start Docker Compose Services
       command: docker compose -f "{{ base_dir }}/compose.yml" up -d
       args:

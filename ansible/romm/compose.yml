@@ -5,7 +5,7 @@ volumes:
 
 services:
   romm:
-    image: rommapp/romm:4.1.6
+    image: rommapp/romm:4.4.0
     container_name: romm
     restart: unless-stopped
     environment:
@@ -13,15 +13,16 @@ services:
       - DB_NAME=romm # Should match MARIADB_DATABASE in mariadb
       - DB_USER=romm-user # Should match MARIADB_USER in mariadb
       #- DB_PASSWD=${MARIADB_PASSWORD} # Should match MARIADB_PASSWORD in mariadb
-      - ROMM_AUTH_SECRET_KEY= # Generate a key with `openssl rand -hex 32`
+      # - ROMM_AUTH_SECRET_KEY= # Generate a key with `openssl rand -hex 32`
       #- IGDB_CLIENT_ID= # Generate an ID and SECRET in IGDB
       #- IGDB_CLIENT_SECRET= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#igdb
       - MOBYGAMES_API_KEY= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#mobygames
       #- STEAMGRIDDB_API_KEY= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#steamgriddb
-      - SCREENSCRAPER_USER= # Use your ScreenScraper username and password
-      - SCREENSCRAPER_PASSWORD= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#screenscraper
+      # - SCREENSCRAPER_USER= # Use your ScreenScraper username and password
+      # - SCREENSCRAPER_PASSWORD= # https://docs.romm.app/latest/Getting-Started/Generate-API-Keys/#screenscraper
       - HASHEOUS_API_ENABLED=true # Enable Hasheous API
       - PLAYMATCH_API_ENABLED=true # Enable PlayMatch API
+      - HLTB_API_ENABLED=true # Enable HowLongToBeat API
       - OIDC_ENABLED=true # Enable OIDC authentication
       - OIDC_PROVIDER=pocketid
       - OIDC_REDIRECT_URI=https://romm.puccia.org/api/oauth/openid

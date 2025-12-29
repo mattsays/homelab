@@ -1,14 +1,21 @@
 services:
   homebox:
     image: ghcr.io/sysadminsmedia/homebox:latest
-#   image: ghcr.io/sysadminsmedia/homebox:latest-rootless
     container_name: homebox
     restart: always
+    env_file: ./secrets.env
     environment:
     - HBOX_LOG_LEVEL=info
     - HBOX_LOG_FORMAT=text
     - HBOX_WEB_MAX_FILE_UPLOAD=10
     - HBOX_OPTIONS_ALLOW_ANALYTICS=false
+    - HBOX_OIDC_ENABLED=true
+    - HBOX_OIDC_ISSUER_URL=https://pocketid.puccia.org
+    - HBOX_OIDC_BUTTON_TEXT=Login with PocketID
+    - HBOX_OPTIONS_TRUST_PROXY=true
+    - HBOX_OPTIONS_HOSTNAME=home.puccia.org
+    - HBOX_OIDC_AUTO_REDIRECT=true
+    - HBOX_OPTIONS_ALLOW_LOCAL_LOGIN=false
     volumes:
       - /opt/homebox/data:/data/
     ports:

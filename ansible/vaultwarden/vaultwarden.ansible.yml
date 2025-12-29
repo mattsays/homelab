@@ -1,11 +1,12 @@
 ---
 - import_playbook: ../docker/docker.ansible.yml
     
-- name: Install Homebox
+- name: Install Vaultwarden
   hosts: all
   become: true
   vars:
-    base_dir: /opt/homebox
+    base_dir: /opt/vaultwarden
+
   tasks:
     - name: Create necessary directories
       file:
@@ -19,11 +20,6 @@
       copy:
         dest: "{{ base_dir }}/compose.yml"
         src: ./compose.yml
-
-    - name: Copy secrets.env
-      copy:
-        dest: "{{ base_dir }}/secrets.env"
-        src: ./secrets.env
     
     - name: Start Docker Compose Services
       command: docker compose -f "{{ base_dir }}/compose.yml" up -d

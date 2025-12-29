@@ -83,9 +83,9 @@ terraform {
   }
 }
 
-variable "privileged" {
+variable "unprivileged" {
   type = bool
-  default = false
+  default = true
 }
 
 resource "proxmox_lxc" "lxc" {
@@ -94,7 +94,7 @@ resource "proxmox_lxc" "lxc" {
   ostemplate   = var.lxc_template
   vmid         = var.vmid
   
-  unprivileged = !var.privileged
+  unprivileged = var.unprivileged
 
   features {
     nesting = true

@@ -20,7 +20,7 @@ module "media" {
   memory = 8192
   rootfs = "16G"
   start_on_boot = true
-  privileged = true
+  unprivileged = false
   
   mountpoints = [ 
     {
@@ -40,6 +40,17 @@ module "openwebui" {
   cores = 2
   memory = 4096
   rootfs = "25G"
+  start_on_boot = true
+}
+
+module "vaultwarden" {
+  source = "./lxc"
+  
+  name = "vaultwarden"
+  vmid = 117
+  cores = 1
+  memory = 512
+  rootfs = "8G"
   start_on_boot = true
 }
 
@@ -211,15 +222,27 @@ module "plantit" {
   start_on_boot = true
 }
 
-module "siyuan" {
+
+module "peanut" {
   source = "./lxc"
-  name = "siyuan"
+  
+  name = "peanut"
   vmid = 135
-  cores = 3
+  cores = 2
   memory = 4096
+  start_on_boot = true
+  unprivileged = false
+}
+
+module "gitea" {
+  source = "./lxc"
+
+  name = "gitea"
+  vmid = 136
+  cores = 1
+  memory = 2048
   rootfs = "8G"
   start_on_boot = true
-
 }
 
 ################################
