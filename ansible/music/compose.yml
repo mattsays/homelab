@@ -3,81 +3,61 @@
 # MUSIC STACK
 ##########
 services:
-  # navidrome:
-  #   container_name: navidrome
-  #   image: deluan/navidrome:latest
-  #   ports:
-  #     - "4533:4533"
-  #   restart: unless-stopped
-  #   env_file: secrets.env
-  #   environment:
-  #     # Optional: put your config options customization here. Examples:
-  #     ND_SCANSCHEDULE: 1h
-  #     ND_LOGLEVEL: info
-  #     ND_SESSIONTIMEOUT: 24h
-  #     ND_BASEURL: ""
-  #     # Setup spotify and lastfm secrets in secrets.env
-  #     #ND_SPOTIFY_ID: ""
-  #     #ND_SPOTIFY_SECRET: ""
-  #     #ND_LASTFM_APIKEY: ""
-  #     #ND_LASTFM_SECRET: ""
-  #   volumes:
-  #     - "/opt/music/navidrome/:/data"
-  #     - "/mnt/music:/music:ro"
-
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    network_mode: 'host'
-    volumes:
-      - /opt/music/jellyfin/config:/config
-      - /opt/music/jellyfin/cache:/cache
-      - type: bind
-        source: /mnt/music
-        target: /music
-    restart: 'unless-stopped'
-    # Optional - alternative address used for autodiscovery
-    environment:
-      - JELLYFIN_PublishedServerUrl=https://music.puccia.org
-
-  deemix:
-    image: registry.gitlab.com/bockiii/deemix-docker
-    container_name: deemix
-    restart: unless-stopped
-    volumes:
-      - /mnt/music/:/downloads
-      - /opt/music/deemix:/config
-      - /opt/music/scripts/:/scripts
-    environment:
-      - DEEMIX_SINGLE_USER=true
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
     ports:
-      - 6595:6595
-    extra_hosts:
-        - "host.docker.internal:host-gateway"
+      - "4533:4533"
+    restart: unless-stopped
+    env_file: secrets.env
+    environment:
+      PUID: 1000  
+      PGID: 1000  
+      # Optional: put your config options customization here. Examples:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+      # Setup spotify and lastfm secrets in secrets.env
+      #ND_SPOTIFY_ID: ""
+      #ND_SPOTIFY_SECRET: ""
+      #ND_LASTFM_APIKEY: ""
+      #ND_LASTFM_SECRET: ""
+    volumes:
+      - "/opt/music/navidrome/:/data"
+      - "/mnt/music:/music:ro"
   
-  spotizerr:
-    image: cooldockerizer93/spotizerr
-    volumes:
-    # Ensure these directories and the .cache file exist and are writable by the container user
-    - /opt/music/spotizerr/data:/app/data # data directory, contains config, creds, watch, history
-    - /mnt/music/:/app/downloads # downloads directory, contains downloaded files
-    - /opt/music/spotizerr/logs:/app/logs # logs directory, contains logs
+  octo-fiestarr:
+    image: ghcr.io/bransoned/octo-fiestarr
+    container_name: octo-fiestarr
+    restart: unless-stopped
     ports:
-    # Port to expose the app on
-    - 7171:7171
-    container_name: spotizerr-app
-    restart: unless-stopped
-    env_file: secrets.env
-    depends_on:
-    - redis
-  redis:
-    image: redis:alpine
-    container_name: spotizerr-redis
-    restart: unless-stopped
-    env_file: secrets.env
+      - "5274:8080"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - ASPNETCORE_ENVIRONMENT=Production
+      # Navidrome/Subsonic server URL
+      - Subsonic__Url=http://10.0.46.126:4533
+      # Explicit content filter: All, ExplicitOnly, CleanOnly (default: ExplicitOnly)
+      - Subsonic__ExplicitFilter=All
+      # Download mode: Track (only requested track), Album (full album when playing a track)
+      - Subsonic__DownloadMode=Track
+      # Download path inside container
+      - Library__DownloadPath=/app/downloads
+      # SquidWTF preferred audio quality
+      - SquidWTF__Quality=HIGH
+      # Set cache or permanent download of external songs
+      - Storage__Mode=Cache
+      # Set cache duration
+      - Cache__DurationHours=1
     volumes:
-    - redis-data:/data
-    command: sh -c 'redis-server --requirepass "$REDIS_PASSWORD" --appendonly yes'
-volumes:
-  redis-data:
-    driver: local
+      - /mnt/music/:/app/downloads
+
+  aonsoku:
+    container_name: aonsoku
+    image: ghcr.io/victoralvesf/aonsoku:latest
+    restart: unless-stopped
+    ports:
+      - 8080:8080

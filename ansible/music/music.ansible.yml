@@ -15,14 +15,15 @@
         - /opt/music/navidrome
         - /opt/music/deemix
         - /opt/music/scripts
-        - /mnt/music
-        - /opt/music/spotizerr
-        - /opt/music/spotizerr/data
-        - /opt/music/spotizerr/logs
-        - /opt/music/spotizerr/cache
-        - /opt/music/jellyfin/config
-        - /opt/music/jellyfin/cache
-        
+        - /opt/music/lidarr
+        - /opt/music/lidarr/config
+        - /opt/music/lidarr/downloads
+
+    - name: Create mnt/music
+      file:
+        path: /mnt/music
+        state: directory
+        mode: '0777'
 
     - name: Copy compose.yml
       copy:
